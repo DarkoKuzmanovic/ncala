@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ncala</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="page">
+      <header class="hero">
+        <div>
+          <h1>ncala</h1>
+          <p>The classic Mancala duel, reimagined for the web.</p>
+        </div>
+        <div class="actions">
+          <button id="create-btn" class="primary">Create match</button>
+          <form id="join-form" class="join-form" autocomplete="off">
+            <input
+              id="join-code"
+              class="code-input"
+              name="code"
+              maxlength="5"
+              placeholder="Invite code"
+              aria-label="Invite code"
+              required
+            />
+            <button type="submit" class="secondary">Join</button>
+          </form>
+        </div>
+      </header>
+
+      <section class="status-panel">
+        <div class="status-item">
+          <span class="label">Invite code</span>
+          <span id="code-display" class="value">—</span>
+        </div>
+        <div class="status-item">
+          <span class="label">You</span>
+          <span id="role-display" class="value">Spectator</span>
+        </div>
+        <div class="status-item">
+          <span class="label">Match state</span>
+          <span id="state-display" class="value">Idle</span>
+        </div>
+        <div class="status-item">
+          <span class="label">Turn</span>
+          <span id="turn-display" class="value">—</span>
+        </div>
+      </section>
+
+      <section class="board-wrapper">
+        <div id="board" class="board" aria-label="Mancala board"></div>
+      </section>
+
+      <section class="notifications" aria-live="polite">
+        <p id="message">Welcome! Create or join a duel with an invite code.</p>
+      </section>
+    </main>
+    <script src="./socket.io/socket.io.js" data-socket></script>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

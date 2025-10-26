@@ -1,0 +1,26 @@
+{
+  "name": "ncala",
+  "version": "1.0.0",
+  "description": "Real-time multiplayer Mancala game with invite code matchmaking.",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node ./node_modules/nodemon/bin/nodemon.js server/index.js"
+  },
+  "keywords": [
+    "mancala",
+    "socket.io",
+    "multiplayer",
+    "game"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2",
+    "nanoid": "^5.0.6",
+    "socket.io": "^4.7.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
+}
