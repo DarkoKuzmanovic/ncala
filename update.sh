@@ -7,8 +7,11 @@
 set -e
 
 # --- Configuration ---
-APP_DIR="/var/www/ncala"
-LOG_FILE="/tmp/ncala.log"
+# Use current directory dynamically instead of hardcoded path
+APP_DIR="$(pwd)"
+# Create dynamic log file based on directory name to avoid conflicts
+DIR_NAME=$(basename "$APP_DIR")
+LOG_FILE="/tmp/ncala-${DIR_NAME}.log"
 HEALTH_CHECK_URL_LOCAL="http://localhost:3000/health"
 HEALTH_CHECK_URL_PUBLIC="https://your-domain.com/ncala/health"
 
@@ -31,11 +34,13 @@ print_error() {
   echo -e "\033[1;31m❌ $1\033[0m"
 }
 
-# 1. Navigate to the project directory
-if [ -n "$APP_DIR" ]; then
-  print_status "Changing directory to $APP_DIR"
-  cd "$APP_DIR" || { print_error "Failed to change directory to $APP_DIR"; exit 1; }
+# 1. Verify we're in a git repository
+if [ ! -d ".git" ]; then
+  print_error "This script must be run from within a git repository."
+  exit 1
 fi
+
+print_status "Running update script in directory: $APP_DIR"
 
 # 2. Save any local server changes
 print_status "Stashing any local changes..."
