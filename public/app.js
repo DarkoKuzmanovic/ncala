@@ -53,7 +53,10 @@ const selectors = {
   message: document.getElementById('message'),
   createButton: document.getElementById('create-btn'),
   joinForm: document.getElementById('join-form'),
-  joinInput: document.getElementById('join-code')
+  joinInput: document.getElementById('join-code'),
+  actions: document.querySelector('.actions'),
+  themeToggle: document.getElementById('theme-toggle'),
+  themeIcon: document.querySelector('.theme-icon')
 };
 
 const cellMap = new Map();
@@ -175,6 +178,11 @@ function applyServerState(payload) {
   refreshUI();
 }
 
+function updateActionsVisibility() {
+  const isGameInProgress = gameState.status === 'active' || gameState.status === 'waiting';
+  selectors.actions.style.display = isGameInProgress ? 'none' : 'flex';
+}
+
 function refreshUI() {
   selectors.code.textContent = gameState.code || '—';
   selectors.role.textContent = labelForRole(gameState.youAre);
@@ -183,6 +191,7 @@ function refreshUI() {
 
   refreshBoard();
   updateMessageForState();
+  updateActionsVisibility();
 }
 
 function refreshBoard() {
@@ -329,5 +338,32 @@ socket.on('disconnect', () => {
   setMessage('Connection lost. Waiting to reconnect...');
 });
 
+function initializeTheme() {
+  const savedTheme = localStorage.getItem('theme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const theme = savedTheme || (prefersDark ? 'dark' : 'light');
+  setTheme(theme);
+}
+
+function setTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  localStorage.setItem('theme', theme);
+
+  if (selectors.themeIcon) {
+    selectors.themeIcon.textContent = theme === 'dark' ? '🌙' : '☀️';
+  }
+}
+
+function toggleTheme() {
+  const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+  const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+  setTheme(newTheme);
+}
+
+if (selectors.themeToggle) {
+  selectors.themeToggle.addEventListener('click', toggleTheme);
+}
+
+initializeTheme();
 buildBoard();
 refreshUI();

@@ -13,20 +13,25 @@
           <h1>ncala</h1>
           <p>The classic Mancala duel, reimagined for the web.</p>
         </div>
-        <div class="actions">
-          <button id="create-btn" class="primary">Create match</button>
-          <form id="join-form" class="join-form" autocomplete="off">
-            <input
-              id="join-code"
-              class="code-input"
-              name="code"
-              maxlength="5"
-              placeholder="Invite code"
-              aria-label="Invite code"
-              required
-            />
-            <button type="submit" class="secondary">Join</button>
-          </form>
+        <div class="hero-controls">
+          <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+            <span class="theme-icon">🌙</span>
+          </button>
+          <div class="actions">
+            <button id="create-btn" class="primary">Create match</button>
+            <form id="join-form" class="join-form" autocomplete="off">
+              <input
+                id="join-code"
+                class="code-input"
+                name="code"
+                maxlength="5"
+                placeholder="Invite code"
+                aria-label="Invite code"
+                required
+              />
+              <button type="submit" class="secondary">Join</button>
+            </form>
+          </div>
         </div>
       </header>
 
