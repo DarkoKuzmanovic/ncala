@@ -2,11 +2,17 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-
 cd "$ROOT_DIR"
 
-if [ ! -d "node_modules" ]; then
-  npm install --production
+# Load environment
+if [ -f ".env" ]; then
+    export $(cat .env | grep -v '^#' | xargs)
 fi
 
+# Install dependencies if needed
+if [ ! -d "node_modules" ]; then
+    npm install --production
+fi
+
+# Start application
 exec node server/index.js

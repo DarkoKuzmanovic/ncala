@@ -12,7 +12,7 @@ APP_DIR="$(pwd)"
 # Create dynamic log file based on directory name to avoid conflicts
 DIR_NAME=$(basename "$APP_DIR")
 LOG_FILE="/tmp/ncala-${DIR_NAME}.log"
-HEALTH_CHECK_URL_LOCAL="http://localhost:3000/health"
+HEALTH_CHECK_URL_LOCAL="http://localhost:3001/ncala/health"
 HEALTH_CHECK_URL_PUBLIC="https://your-domain.com/ncala/health"
 
 # --- Script Logic ---
@@ -77,10 +77,16 @@ else
 fi
 
 # 6. Restart the application
-print_status "Restarting the application..."
-pkill -9 -f "node.*server/index.js" || print_warning "No running Node.js process found to kill."
-nohup bash start.sh > "$LOG_FILE" 2>&1 &
-print_success "Application restart initiated."
+print_status "Restarting the application with PM2..."
+if command -v pm2 &> /dev/null; then
+  pm2 restart ncala --update-env
+  print_success "Application restarted via PM2."
+else
+  print_warning "PM2 not found. Using fallback method..."
+  pkill -9 -f "node.*server/index.js" || print_warning "No running Node.js process found to kill."
+  nohup bash start.sh > "$LOG_FILE" 2>&1 &
+  print_success "Application restart initiated."
+fi
 
 # 7. Verify it's working
 print_status "Waiting for the application to start..."
